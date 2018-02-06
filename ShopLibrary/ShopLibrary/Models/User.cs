@@ -11,6 +11,7 @@ namespace ShoppingLibrary.Models
         
         protected User(string username, string password)
         {
+            this.Order = new Order();
             this.Username = username;
             this.password = password;
         }
