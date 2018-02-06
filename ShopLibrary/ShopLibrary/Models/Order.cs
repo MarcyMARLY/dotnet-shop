@@ -7,6 +7,11 @@ namespace ShoppingLibrary.Models
     {
         private List<Tuple<int, int>> products;
 
+        public Order()
+        {
+            products = new List<Tuple<int, int>>();
+        }
+        
         public void AddProduct(Tuple<int, int> tuple)
         {
             products.Add(tuple);
