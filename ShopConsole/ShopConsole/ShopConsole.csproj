@@ -1,8 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp2.0</TargetFramework>
-    </PropertyGroup>
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ShopLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\ShopLibrary\ShopLibrary\obj\Debug\netcoreapp2.0\ShopLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
