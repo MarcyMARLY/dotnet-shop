@@ -6,5 +6,6 @@
         public float price;
         public string origin;
         public int amount;
+        public int id;
     }
 }

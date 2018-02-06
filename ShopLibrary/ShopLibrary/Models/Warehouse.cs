@@ -27,6 +27,11 @@ namespace ShoppingLibrary.Models
             }
         }
 
+        public Product GetProductById(int id)
+        {
+            return products.Find(x => x.id == id);
+        }
+        
         public List<Product> GetProducts()
         {
             return products;

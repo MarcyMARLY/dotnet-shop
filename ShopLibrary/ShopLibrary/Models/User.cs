@@ -6,6 +6,7 @@ namespace ShoppingLibrary.Models
     {
         protected string id;
         public string Username { get; set; }
+        public Order Order { get; set; }
         protected string password;
         
         protected User(string username, string password)
