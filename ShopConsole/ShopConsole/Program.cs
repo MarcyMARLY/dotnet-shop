@@ -43,73 +43,90 @@ namespace ShopConsole
                             {
                                 Console.WriteLine("Product:ID {0}, Name {1}, Amount {2}, Price {3}", item.id, item.name, item.amount, item.price);
                             }
-    
-                            Console.WriteLine(
-                                "Choose the action:\n 1) Add items to basket \n 2) Show the basket\n 3) Make payment\n 4) Show priduct list");
-                            string n = Console.ReadLine();
-                            if (n == "1")
+
+                            bool checkP = true;
+                            while (checkP)
                             {
-                                bool entering = true;
-                                while (entering)
+                                Console.WriteLine(
+                                    "Choose the action:\n 1) Add items to basket \n 2) Show the basket\n 3) Make payment\n 4) Show product list\n 5)Quit" );
+                                string n = Console.ReadLine();
+                                if (n == "1")
                                 {
-                                    Console.WriteLine("To quit enter the 'q' ");
-                                    Console.WriteLine("Please,enter the id of product");
-                                    var command = Console.ReadLine();
-                                    if (command == "q")
+                                    bool entering = true;
+                                    while (entering)
                                     {
-                                        entering = false;
-                                        continue;
+                                        Console.WriteLine("To quit enter the 'q' ");
+                                        Console.WriteLine("Please,enter the id of product");
+                                        var command = Console.ReadLine();
+                                        if (command == "q")
+                                        {
+                                            entering = false;
+                                            continue;
+                                        }
+
+                                        var productId = int.Parse(command);
+                                        Console.WriteLine("Please Enter the desired amount of product");
+                                        var productAmount = int.Parse(Console.ReadLine());
+                                        if (productAmount <= warehouse.GetProductById(productId).amount)
+                                        {
+                                            var productIdAndAmount = new Tuple<int, int>(productId, productAmount);
+                                            user.Order.AddProduct(productIdAndAmount);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine(
+                                                "We don't have such an amount of this product, Please enter less or equal to {0}",
+                                                warehouse.GetProductById(productId).amount);
+                                            productAmount = int.Parse(Console.ReadLine());
+                                            var productIdAndAmount = new Tuple<int, int>(productId, productAmount);
+                                            user.Order.AddProduct(productIdAndAmount);
+
+                                        }
                                     }
 
-                                    var productId = int.Parse(command);
-                                    Console.WriteLine("Please Enter the desired amount of product");
-                                    var productAmount = int.Parse(Console.ReadLine());
-                                    if (productAmount <= warehouse.GetProductById(productId).amount)
-                                    {
-                                        var productIdAndAmount = new Tuple<int, int>(productId, productAmount);
-                                        user.Order.AddProduct(productIdAndAmount);
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("We don't have such an amount of this product, Please enter less or equal to {0}",warehouse.GetProductById(productId).amount);
-                                        productAmount = int.Parse(Console.ReadLine());
-                                        var productIdAndAmount = new Tuple<int, int>(productId, productAmount);
-                                        user.Order.AddProduct(productIdAndAmount);
-                                        
-                                    }
-                                }
-    
-    
-                            }
-                            else if (n == "2")
-                            {
-                                foreach (var item in user.Order.GetProducts() )
-                                {
-                                    Product current = warehouse.GetProductById(item.Item1);
-                                    Console.WriteLine("Product -> id: {0}, name: {1}, warehouse amount: {2}, user desired amount: {3}", current.id, current.name, current.amount, item.Item2);
-                                }
-                            }else if (n == "3")
-                            {
-                                List<Product> sendList = new List<Product>();
-                                foreach (var item in user.Order.GetProducts())
-                                {
-                                    var val = warehouse.GetProductById(item.Item1);
-                                    sendList.Add(val);
-                             
-                                }
 
-                                var t = user.Order.PrepareTransaction(sendList);
-                                Console.WriteLine("Transaction -> id:{0}, date: {1}, charge:{2}",t.Id,t.TransactionDateTime,t.Charge );
+                                }
+                                else if (n == "2")
+                                {
+                                    foreach (var item in user.Order.GetProducts())
+                                    {
+                                        Product current = warehouse.GetProductById(item.Item1);
+                                        Console.WriteLine(
+                                            "Product -> id: {0}, name: {1}, warehouse amount: {2}, user desired amount: {3}",
+                                            current.id, current.name, current.amount, item.Item2);
+                                    }
+                                }
+                                else if (n == "3")
+                                {
+                                    List<Product> sendList = new List<Product>();
+                                    foreach (var item in user.Order.GetProducts())
+                                    {
+                                        var val = warehouse.GetProductById(item.Item1);
+                                        sendList.Add(val);
+
+                                    }
+
+                                    var t = user.Order.PrepareTransaction(sendList);
+                                    Console.WriteLine("Transaction -> id:{0}, date: {1}, charge:{2}", t.Id,
+                                        t.TransactionDateTime, t.Charge);
+                                }
+                                else if (n == "4")
+                                {
+                                    foreach (var item in warehouse.GetProducts())
+                                    {
+                                        Console.WriteLine("Product:ID {0}, Name {1}, Amount {2}, Price {3}", item.id, item.name, item.amount, item.price);
+                                    }
+                                    
+                                }
+                                else if (n == "5")
+                                {
+                                    checkP = false;
+                                }
                             }
                         }
-                        else
-                        {
-                        }
+
                     }
-                    else
-                    {
-    
-                    }
+   
     
                 }
                 else if(op1 == "2")
@@ -129,9 +146,5 @@ namespace ShopConsole
             }
         }
 
-        public void PrintProducts()
-        {
-            
-        }
     }
 }
