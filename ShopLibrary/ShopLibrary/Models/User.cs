@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ShoppingLibrary.Models
+namespace ShopLibrary.Models
 {
     public abstract class User
     {

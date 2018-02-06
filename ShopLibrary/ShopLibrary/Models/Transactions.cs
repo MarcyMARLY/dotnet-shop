@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data.Common;
 using Microsoft.Win32.SafeHandles;
 
-namespace ShoppingLibrary.Models
+namespace ShopLibrary.Models
 {
     public class Transaction
     {

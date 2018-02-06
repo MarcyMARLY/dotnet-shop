@@ -1,4 +1,4 @@
-﻿namespace ShoppingLibrary.Models
+﻿namespace ShopLibrary.Models
 {
     public class Customer: User
     {

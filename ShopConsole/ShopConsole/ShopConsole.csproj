@@ -7,5 +7,11 @@
     <Reference Include="ShopLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\ShopLibrary\ShopLibrary\obj\Debug\netcoreapp2.0\ShopLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="ShopLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\ShopLibrary\ShopLibrary\obj\Debug\netcoreapp2.0\ShopLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="ShopLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\ShopLibrary\ShopLibrary\obj\Debug\netcoreapp2.0\ShopLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

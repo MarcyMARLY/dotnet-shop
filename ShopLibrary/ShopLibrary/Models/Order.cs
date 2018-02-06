@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ShoppingLibrary.Models
+namespace ShopLibrary.Models
 {
     public class Order
     {
