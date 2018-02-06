@@ -1,17 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ShoppingLibrary.Models
 {
     public class Order
     {
-        private List<Product> products;
+        private List<Tuple<int, int>> products;
 
-        public void AddProduct(Product product)
+        public void AddProduct(Tuple<int, int> tuple)
         {
-            products.Add(product);
+            products.Add(tuple);
         }
-
-        public List<Product> GetProducts()
+    
+        public List<Tuple<int, int>> GetProducts()
         {
             return products;
         }
