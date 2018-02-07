@@ -1,16 +1,23 @@
 ﻿using System;
 using ShopLibrary;
-
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using ShopLibrary.Models;
 
 namespace ShopConsole
 {
     class Program
     {
+        static string Path = "Transactions.csv";
+        public static List<Transaction> cachedCollection;
         static void Main(string[] args)
         {
+            
+            
             Market market = new Market();
             Product p1 = new Product() {amount = 20, id = 1, name = "Lalka", origin = "china", price = 30f};
             Product p2 = new Product() {amount = 30, id = 2, name = "salka", origin = "china", price = 30f};
@@ -48,7 +55,7 @@ namespace ShopConsole
                             while (checkP)
                             {
                                 Console.WriteLine(
-                                    "Choose the action:\n 1) Add items to basket \n 2) Show the basket\n 3) Make payment\n 4) Show product list\n 5)Quit" );
+                                    "Choose the action:\n 1) Add items to basket \n 2) Show the basket\n 3) Make payment\n 4) Show product list\n 5)Show transactions\n 6)Quit" );
                                 string n = Console.ReadLine();
                                 if (n == "1")
                                 {
@@ -94,6 +101,7 @@ namespace ShopConsole
                                         Console.WriteLine(
                                             "Product -> id: {0}, name: {1}, warehouse amount: {2}, user desired amount: {3}",
                                             current.id, current.name, current.amount, item.Item2);
+                                        
                                     }
                                 }
                                 else if (n == "3")
@@ -109,6 +117,8 @@ namespace ShopConsole
                                     var t = user.Order.PrepareTransaction(sendList);
                                     Console.WriteLine("Transaction -> id:{0}, date: {1}, charge:{2}", t.Id,
                                         t.TransactionDateTime, t.Charge);
+                                    SetTransactions(t.Id, t.Charge, t.TransactionDateTime);
+
                                 }
                                 else if (n == "4")
                                 {
@@ -119,6 +129,14 @@ namespace ShopConsole
                                     
                                 }
                                 else if (n == "5")
+                                {
+                                    var result = GetTransactions();
+                                    foreach (var item in result)
+                                    {
+                                        Console.WriteLine("Transaction Id:{0}, Charge: {1}, TransactionDateTime: {2}", item.Id, item.Charge, item.TransactionDateTime);
+                                    }
+                                }
+                                else if (n == "6")
                                 {
                                     checkP = false;
                                 }
@@ -144,6 +162,38 @@ namespace ShopConsole
                     check = false;
                 }
             }
+        }
+
+        public static List<Transaction> GetTransactions()
+        {
+           
+            if (cachedCollection == null)
+            {
+                var data = File.ReadAllLines(Path);
+                cachedCollection = data
+                    .Select(x => ConvertItem(x))
+                    .ToList();
+
+            }
+
+            return cachedCollection;
+        }
+
+        public static Transaction ConvertItem(string item)
+        {
+            var itemList = item.Split(';');
+            return new Transaction()
+            {
+                Id = Convert.ToInt32(itemList[0]),
+                Charge = Convert.ToSingle(itemList[1]),
+                TransactionDateTime = Convert.ToDateTime(itemList[2])
+            };
+        }
+
+        public static void SetTransactions(int Id, float Charge, DateTime TransactionDateTime)
+        {
+            string val = Id.ToString() + ';' + Charge.ToString() + ';' + TransactionDateTime.ToString() + '\n';
+            File.AppendAllText(Path,val);
         }
 
     }

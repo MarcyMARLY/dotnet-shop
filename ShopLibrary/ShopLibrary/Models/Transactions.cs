@@ -10,6 +10,10 @@ namespace ShopLibrary.Models
         public float Charge { get; set; }
         public DateTime TransactionDateTime { get; set; }
 
+        public Transaction()
+        {
+        }
+
         public Transaction(int id, float charge)
         {
             this.Id = id;
