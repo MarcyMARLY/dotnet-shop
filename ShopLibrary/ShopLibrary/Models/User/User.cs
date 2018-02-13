@@ -14,15 +14,25 @@ namespace ShopLibrary.Models.User
         
         protected User(string username, string password)
         {
-            Basket = new Basket();
             id = new Random(100000).Next();
             this.Username = username;
             this.password = password;
+            Basket = new Basket();
+        }
+
+        public void DisposeBasket()
+        {
+            Basket.CleanBasket();
         }
         
         public virtual bool Authenticate(string username, string password)
         {
             return this.password == password && this.Username == username;
-        } 
+        }
+
+        public int GetUserId()
+        {
+            return this.id;
+        }
     }
 }

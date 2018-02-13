@@ -2,10 +2,10 @@
 {
     public class BasketItem
     {
-        private string id;
+        private int id;
         private int amount;
 
-        public BasketItem(string _id, int _amount)
+        public BasketItem(int _id, int _amount)
         {
             this.id = _id;
             this.amount = _amount;
@@ -16,7 +16,7 @@
             return amount;
         }
 
-        public string GetId()
+        public int GetId()
         {
             return id;
         }
