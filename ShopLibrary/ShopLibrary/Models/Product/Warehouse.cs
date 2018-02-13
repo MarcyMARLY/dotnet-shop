@@ -16,20 +16,20 @@ namespace ShopLibrary.Models
         
         public void AddProduct(Product product)
         {
-            int productsCount = products.Where(x => x.name == product.name).ToList().Count;
+            var productsCount = products.Where(x => x.Name == product.Name).ToList().Count;
             if (productsCount == 0)
             {
                 products.Add(product);
             }
             else
             {
-                products.First(x => x.name == product.name).amount++;
+                products.First(x => x.Name == product.Name).Amount++;
             }
         }
 
         public Product GetProductById(int id)
         {
-            return products.Find(x => x.id == id);
+            return products.Find(x => x.Id == id);
         }
         
         public List<Product> GetProducts()

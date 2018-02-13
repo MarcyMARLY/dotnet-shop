@@ -5,13 +5,13 @@ namespace ShopLibrary.Models
 {
     public class Market
     {
-        public Warehouse warehouse;
+        public Warehouse Warehouse { get; set; }
         private List<User> users;
         
         public Market()
         {
             users = new List<User>();
-            warehouse = new Warehouse("temporary");
+            Warehouse = new Warehouse("temporary");
         }
 
         public void AddUser(User newUser)

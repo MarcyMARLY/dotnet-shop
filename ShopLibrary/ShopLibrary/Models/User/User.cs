@@ -5,9 +5,10 @@ namespace ShopLibrary.Models
     public abstract class User
     {
         protected string id;
+        protected string password;
+        
         public string Username { get; set; }
         public Order Order { get; set; }
-        protected string password;
         
         protected User(string username, string password)
         {

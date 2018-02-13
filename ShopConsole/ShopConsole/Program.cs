@@ -13,24 +13,23 @@ namespace ShopConsole
     class Program
     {
         static string Path = "Transactions.csv";
-        public static List<Transaction> cachedCollection;
+        private static List<Transaction> cachedCollection;
+        
         static void Main(string[] args)
         {
-            
-            
             Market market = new Market();
-            Product p1 = new Product() {amount = 20, id = 1, name = "Lalka", origin = "china", price = 30f};
-            Product p2 = new Product() {amount = 30, id = 2, name = "salka", origin = "china", price = 30f};
-            Product p3 = new Product() {amount = 10, id = 3, name = "Dalka", origin = "china", price = 30f};
-            var warehouse = market.warehouse;
+            Product p1 = new Product() {Amount = 20, Id = 1, Name = "Lalka", Origin = "china", Price = 30f};
+            Product p2 = new Product() {Amount = 30, Id = 2, Name = "salka", Origin = "china", Price = 30f};
+            Product p3 = new Product() {Amount = 10, Id = 3, Name = "Dalka", Origin = "china", Price = 30f};
+            var warehouse = market.Warehouse;
             warehouse.AddProduct(p1);
             warehouse.AddProduct(p2);
             warehouse.AddProduct(p3);
             bool check = true;
             while (check){
                 Console.WriteLine("Choose the option\n 1) Login\n 2) Registration \n 3) Quit");
-                string op1 = Console.ReadLine();
-                if (op1 == "1")
+                string option = Console.ReadLine();
+                if (option == "1")
                 {
                     Console.WriteLine("Hello! Please enter the username");
                     string username = Console.ReadLine();
@@ -74,7 +73,7 @@ namespace ShopConsole
                                         var productId = int.Parse(command);
                                         Console.WriteLine("Please Enter the desired amount of product");
                                         var productAmount = int.Parse(Console.ReadLine());
-                                        if (productAmount <= warehouse.GetProductById(productId).amount)
+                                        if (productAmount <= warehouse.GetProductById(productId).Amount)
                                         {
                                             var productIdAndAmount = new Tuple<int, int>(productId, productAmount);
                                             user.Order.AddProduct(productIdAndAmount);
@@ -83,7 +82,7 @@ namespace ShopConsole
                                         {
                                             Console.WriteLine(
                                                 "We don't have such an amount of this product, Please enter less or equal to {0}",
-                                                warehouse.GetProductById(productId).amount);
+                                                warehouse.GetProductById(productId).Amount);
                                             productAmount = int.Parse(Console.ReadLine());
                                             var productIdAndAmount = new Tuple<int, int>(productId, productAmount);
                                             user.Order.AddProduct(productIdAndAmount);
@@ -100,7 +99,7 @@ namespace ShopConsole
                                         Product current = warehouse.GetProductById(item.Item1);
                                         Console.WriteLine(
                                             "Product -> id: {0}, name: {1}, warehouse amount: {2}, user desired amount: {3}",
-                                            current.id, current.name, current.amount, item.Item2);
+                                            current.Id, current.Name, current.Amount, item.Item2);
                                         
                                     }
                                 }
@@ -124,7 +123,7 @@ namespace ShopConsole
                                 {
                                     foreach (var item in warehouse.GetProducts())
                                     {
-                                        Console.WriteLine("Product:ID {0}, Name {1}, Amount {2}, Price {3}", item.id, item.name, item.amount, item.price);
+                                        Console.WriteLine("Product:ID {0}, Name {1}, Amount {2}, Price {3}", item.Id, item.Name, item.Amount, item.Price);
                                     }
                                     
                                 }
@@ -142,12 +141,9 @@ namespace ShopConsole
                                 }
                             }
                         }
-
                     }
-   
-    
                 }
-                else if(op1 == "2")
+                else if(option == "2")
                 {
                     Console.WriteLine("Please, enter the username");
                     string username = Console.ReadLine();
@@ -179,7 +175,7 @@ namespace ShopConsole
             return cachedCollection;
         }
 
-        public static Transaction ConvertItem(string item)
+        private static Transaction ConvertItem(string item)
         {
             var itemList = item.Split(';');
             return new Transaction()

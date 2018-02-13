@@ -6,9 +6,9 @@ namespace ShopLibrary.Models
 {
     public class Order
     {
-        public Transaction Transaction { get; set; }
+        private Transaction _transaction { get; set; }
         private List<Tuple<int, int>> products;
-
+        
         public Order()
         {
             products = new List<Tuple<int, int>>();
@@ -26,9 +26,9 @@ namespace ShopLibrary.Models
 
         public Transaction PrepareTransaction(List<Product> products)
         {
-            var sum = products.Sum(x => x.price);
-            var t = new Transaction(new Random(1000).Next(), sum);
-            this.Transaction = t;
+            var sum = products.Sum(x => x.Price);
+            var t = new Transaction() {Charge = sum, Id = new Random(100).Next(), TransactionDateTime = DateTime.Now};
+            this._transaction = t;
             return t;
         }
     }
