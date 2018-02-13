@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 
-namespace ShopLibrary.Models
+namespace ShopLibrary.Models.Order
 {
     public class Basket
     {

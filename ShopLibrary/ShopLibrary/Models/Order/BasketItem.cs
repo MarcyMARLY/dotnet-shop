@@ -1,4 +1,4 @@
-﻿namespace ShopLibrary.Models
+﻿namespace ShopLibrary.Models.Order
 {
     public class BasketItem
     {

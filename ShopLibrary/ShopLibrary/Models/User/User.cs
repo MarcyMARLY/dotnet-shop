@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ShopLibrary.Models
+﻿namespace ShopLibrary.Models.User
 {
     public abstract class User
     {
@@ -8,11 +6,11 @@ namespace ShopLibrary.Models
         protected string password;
         
         public string Username { get; set; }
-        public Order Order { get; set; }
+        public Order.Order Order { get; set; }
         
         protected User(string username, string password)
         {
-            this.Order = new Order();
+            this.Order = new Order.Order();
             this.Username = username;
             this.password = password;
         }
