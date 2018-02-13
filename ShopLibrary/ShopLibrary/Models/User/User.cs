@@ -1,16 +1,21 @@
-﻿namespace ShopLibrary.Models.User
+﻿using System;
+using ShopLibrary.Models.Order;
+
+namespace ShopLibrary.Models.User
 {
     public abstract class User
     {
-        protected string id;
+        protected int id;
         protected string password;
         
         public string Username { get; set; }
-        public Order.Order Order { get; set; }
+        public Basket Basket { get; set; }
+        
         
         protected User(string username, string password)
         {
-            this.Order = new Order.Order();
+            Basket = new Basket();
+            id = new Random(100000).Next();
             this.Username = username;
             this.password = password;
         }
