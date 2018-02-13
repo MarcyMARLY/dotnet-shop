@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using ShopLibrary.Models.Product;
+using ShopLibrary.Models.Store;
 
 namespace ShopLibrary.Models.System
 {
-    public class Market
+    public class ShopSystem
     {
-        public Warehouse Warehouse { get; set; }
+        private IStore store;
         private List<User.User> users;
         
-        public Market()
+        public ShopSystem()
         {
-            users = new List<User.User>();
-            Warehouse = new Warehouse("temporary");
+            store = new FileStorage();
         }
 
         public void AddUser(User.User newUser)

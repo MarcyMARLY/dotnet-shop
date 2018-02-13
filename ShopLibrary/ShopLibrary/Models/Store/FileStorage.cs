@@ -4,6 +4,12 @@ namespace ShopLibrary.Models.Store
 {
     public class FileStorage : IStore
     {
+        
+        public void InitDatabase()
+        {
+            
+        }
+        
         public List<User.User> GetAllUsers()
         {
             throw new global::System.NotImplementedException();

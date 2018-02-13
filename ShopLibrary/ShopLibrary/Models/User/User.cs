@@ -10,8 +10,7 @@ namespace ShopLibrary.Models.User
         
         public string Username { get; set; }
         public Basket Basket { get; set; }
-        
-        
+            
         protected User(string username, string password)
         {
             id = new Random(100000).Next();
