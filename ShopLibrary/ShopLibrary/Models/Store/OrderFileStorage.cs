@@ -1,4 +1,6 @@
-﻿namespace ShopLibrary.Models.Store
+﻿using System.Collections.Generic;
+
+namespace ShopLibrary.Models.Store
 {
     public class OrderFileStorage : IChangeable
     {

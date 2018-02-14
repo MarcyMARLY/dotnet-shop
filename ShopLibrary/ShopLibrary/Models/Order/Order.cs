@@ -10,5 +10,10 @@ namespace ShopLibrary.Models.Order
         public int OrderId { get; set; }
         public List<OrderItem> OrderItems { get; set; }
         public int BuyerId { get; set; }
+
+        public Order()
+        {
+            OrderItems = new List<OrderItem>();
+        }
     }
 }

@@ -8,10 +8,11 @@ namespace ShopLibrary.Models.System
     public class ShopSystem
     {
         private IStore store;
-        
+        private OrderManager manager;
         public ShopSystem()
         {
             store = new FileStorage();
+            manager = new OrderManager(store);
         }
 
         public void AddUser(User.User newUser)
@@ -21,12 +22,12 @@ namespace ShopLibrary.Models.System
 
         public void CreateOrderForUser(int userId)
         {
-            OrderManager.manager.CreateOrderFromBasket(userId);
+            manager.CreateOrderFromBasket(userId);
         }
 
         public void PayOrder(int userId, int orderId)
         {
-            OrderManager.manager.MakePayment(userId, orderId);
+            manager.MakePayment(userId, orderId);
         }
         
         public bool AuthenticateUser(string username, string password)

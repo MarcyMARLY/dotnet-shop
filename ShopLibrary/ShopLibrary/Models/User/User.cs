@@ -7,7 +7,7 @@ namespace ShopLibrary.Models.User
 {
     public abstract class User
     {
-        protected int id;
+        public int id;
         protected string password;
         
         public string Username { get; set; }
@@ -15,7 +15,7 @@ namespace ShopLibrary.Models.User
             
         protected User(string username, string password)
         {
-            id = new Random(100000).Next();
+            id = new Random(100).Next() % 100;
             this.Username = username;
             this.password = password;
             Basket = new Basket();

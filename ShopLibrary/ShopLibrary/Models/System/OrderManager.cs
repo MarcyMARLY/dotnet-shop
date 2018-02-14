@@ -13,10 +13,7 @@ namespace ShopLibrary.Models.System
 
         public OrderManager(IStore storage)
         {
-            if (manager == null)
-            {
-                manager = new OrderManager(storage);
-            }
+            _storage = storage;
         }
 
         public void MakePayment(int userId, int orderId)
@@ -30,7 +27,13 @@ namespace ShopLibrary.Models.System
             var user = _storage.GetAllUsers().Find(x => x.GetUserId() == userId);
             if (user != null)
             {
-                var order = new Order.Order() { BuyerId = userId, OrderId = new Random(1000).Next(), Status = OrderStatus.CREATED};
+//                var order = new Order.Order() { BuyerId = userId, OrderId = new Random(1000).Next(), Status = OrderStatus.CREATED};
+                var order = new Order.Order
+                {
+                    BuyerId = userId,
+                    OrderId = 1,
+                    Status = OrderStatus.CREATED
+                };
                 user.Basket.GetBasketItems().ForEach(x => order.OrderItems.Add(new OrderItem()
                 {
                     Amount = x.GetAmount(), 
