@@ -4,10 +4,19 @@ namespace ShopLibrary.Models.Store
 {
     public class FileStorage : IStore
     {
+        private IChangeable userStorage;
+        private IChangeable orderStorage;
+        private IChangeable productStorage;
         
-        public void InitDatabase()
+        public FileStorage()
         {
+            userStorage = new UserFileStorage();
+            orderStorage = new OrderFileStorage();
+            productStorage = new ProductFileStorage();
             
+            userStorage.ReadFromFile();
+            orderStorage.ReadFromFile();
+            productStorage.ReadFromFile();
         }
         
         public List<User.User> GetAllUsers()
