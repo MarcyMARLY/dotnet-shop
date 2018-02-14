@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using ShopLibrary.Models.Order;
 
 namespace ShopLibrary.Models.User
@@ -22,6 +24,16 @@ namespace ShopLibrary.Models.User
         public User()
         {
             
+        }
+
+        public void AddProductToBasket(int productId)
+        {
+            Basket.AddProduct(productId);
+        }
+
+        public List<BasketItem> GetBasketItems()
+        {
+            return Basket.GetBasketItems();
         }
         
         public void DisposeBasket()

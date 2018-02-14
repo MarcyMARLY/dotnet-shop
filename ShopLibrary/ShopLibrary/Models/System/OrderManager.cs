@@ -10,7 +10,6 @@ namespace ShopLibrary.Models.System
     {
         private IStore _storage;
         public static OrderManager manager; 
-        public List<Order.Order> ActiveOrders { get; set; }
 
         public OrderManager(IStore storage)
         {
@@ -19,21 +18,30 @@ namespace ShopLibrary.Models.System
                 manager = new OrderManager(storage);
             }
         }
+
+        public void MakePayment(int userId, int orderId)
+        {
+            var order = _storage.GetAllOrders().Find(x => x.OrderId == orderId && x.BuyerId == userId);
+            if (order != null) order.Status = OrderStatus.PAID;
+        }
         
         public void CreateOrderFromBasket(int userId)
         {
             var user = _storage.GetAllUsers().Find(x => x.GetUserId() == userId);
             if (user != null)
             {
-                var order = new Order.Order() { OrderId = new Random(1000).Next(), Status = OrderStatus.CREATED};
+                var order = new Order.Order() { BuyerId = userId, OrderId = new Random(1000).Next(), Status = OrderStatus.CREATED};
                 user.Basket.GetBasketItems().ForEach(x => order.OrderItems.Add(new OrderItem()
                 {
                     Amount = x.GetAmount(), 
                     ProductId = x.GetId(), 
                     TotalPrice = x.GetAmount() * _storage.GetProductById(x.GetId()).Price
                 }));
-                ActiveOrders.Add(order);
-                user.DisposeBasket();
+                if (order.OrderItems.Count != 0)
+                {
+                    _storage.AddOrder(order);
+                    user.DisposeBasket();
+                }
             }
         } 
     }

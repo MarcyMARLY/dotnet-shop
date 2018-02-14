@@ -19,6 +19,16 @@ namespace ShopLibrary.Models.System
             store.AddUser(newUser);
         }
 
+        public void CreateOrderForUser(int userId)
+        {
+            OrderManager.manager.CreateOrderFromBasket(userId);
+        }
+
+        public void PayOrder(int userId, int orderId)
+        {
+            OrderManager.manager.MakePayment(userId, orderId);
+        }
+        
         public bool AuthenticateUser(string username, string password)
         {
             return store.GetAllUsers().Find(x => x.Authenticate(username, password)) != null;

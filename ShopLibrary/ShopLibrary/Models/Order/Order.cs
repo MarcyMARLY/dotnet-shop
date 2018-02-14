@@ -9,5 +9,6 @@ namespace ShopLibrary.Models.Order
         public OrderStatus Status { get; set; }
         public int OrderId { get; set; }
         public List<OrderItem> OrderItems { get; set; }
+        public int BuyerId { get; set; }
     }
 }
