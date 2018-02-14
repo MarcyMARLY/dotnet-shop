@@ -25,27 +25,7 @@ namespace ShopConsole
         {
 
             GetProductsFromFile();
-            
-           // user.AddProductToBasket(1);
-            //user.AddProductToBasket(2);
-            /*Console.WriteLine(user.GetUserId());
-
-            system.CreateOrderForUser(user.id);
-            var orders = system.GetAllOrders();
-            foreach (var order in orders)
-            {
-                foreach (var item in order.OrderItems)
-                {
-                    Console.WriteLine(item.ProductId + " " + item.TotalPrice);
-                }
-                Console.WriteLine(order.BuyerId);
-            }*/
-
             Access();
-
-
-
-
         }
 
         public static void GetProductsFromFile()
@@ -118,9 +98,28 @@ namespace ShopConsole
             }
         }
 
+        private static void ShowOrders()
+        {
+            var orderCollection = system.GetAllOrders();
+            foreach (var item in orderCollection)
+            {
+               Console.WriteLine("Status: {0}, Id: {1}, Buyer Id: {2}", item.Status, item.OrderId, item.BuyerId); 
+            }
+        }
+
         private static void Menu()
         {
-            Console.WriteLine("Choose the option: \n 1. Show list of products \n 2. Add product to basket \n 3. Remove product from basket \n 4. Show basket \n 5. Clear basket\n");
+            Console.WriteLine("Choose the option: \n" +
+                              " 1. Show list of products \n" +
+                              " 2. Add product to basket \n" +
+                              " 3. Remove product from basket \n" +
+                              " 4. Remove whole product \n" +
+                              " 5. Show basket \n" +
+                              " 6. Clear basket \n" +
+                              " 7.Create Order \n" +
+                              " 8.Show orders \n" +
+                              " 9. Pay Order \n" +
+                              " 10. Quit \n");
             var option = int.Parse(Console.ReadLine());
             switch (option)
             {
@@ -141,12 +140,34 @@ namespace ShopConsole
                     Menu();
                     break;
                 case 4:
-                    ShowBasket();
+                    Console.WriteLine("Enter product Id");
+                    var IdRemWhole = int.Parse(Console.ReadLine());
+                    loggedUser.Basket.RemoveProduct(IdRemWhole);
                     Menu();
                     break;
                 case 5:
+                    ShowBasket();
+                    Menu();
+                    break;
+                case 6:
                     loggedUser.DisposeBasket();
                     Menu();
+                    break;
+                case 7:
+                    system.CreateOrderForUser(loggedUser.id);
+                    Menu();
+                    break;
+                case 8:
+                    ShowOrders();
+                    Menu();
+                    break;
+                case 9:
+                    Console.WriteLine("Enter order id");
+                    var orderId = int.Parse(Console.ReadLine());
+                    system.PayOrder(loggedUser.id, orderId);
+                    Menu();
+                    break;
+                case 10:
                     break;
             }
         }
