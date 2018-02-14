@@ -7,190 +7,148 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using ShopLibrary.Models;
+using ShopLibrary.Models.Order;
+using ShopLibrary.Models.Product;
+using ShopLibrary.Models.System;
+using ShopLibrary.Models.User;
 
 namespace ShopConsole
 {
     class Program
     {
-        static string Path = "Transactions.csv";
-        private static List<Transaction> cachedCollection;
+
+        private static  ShopSystem system = new ShopSystem();
+        public static User loggedUser; 
+        static readonly string productPath = "AppData/products.csv";
         
         static void Main(string[] args)
         {
-            Market market = new Market();
-            Product p1 = new Product() {Amount = 20, Id = 1, Name = "Lalka", Origin = "china", Price = 30f};
-            Product p2 = new Product() {Amount = 30, Id = 2, Name = "salka", Origin = "china", Price = 30f};
-            Product p3 = new Product() {Amount = 10, Id = 3, Name = "Dalka", Origin = "china", Price = 30f};
-            var warehouse = market.Warehouse;
-            warehouse.AddProduct(p1);
-            warehouse.AddProduct(p2);
-            warehouse.AddProduct(p3);
-            bool check = true;
-            while (check){
-                Console.WriteLine("Choose the option\n 1) Login\n 2) Registration \n 3) Quit");
-                string option = Console.ReadLine();
-                if (option == "1")
+
+            GetProductsFromFile();
+            
+           // user.AddProductToBasket(1);
+            //user.AddProductToBasket(2);
+            /*Console.WriteLine(user.GetUserId());
+
+            system.CreateOrderForUser(user.id);
+            var orders = system.GetAllOrders();
+            foreach (var order in orders)
+            {
+                foreach (var item in order.OrderItems)
                 {
-                    Console.WriteLine("Hello! Please enter the username");
-                    string username = Console.ReadLine();
-                    Console.WriteLine("Please, enter the password");
-                    string password = Console.ReadLine();
-    
-                    var temAdministrator = new Administrator("admin1", "123");
-                    market.AddUser(temAdministrator);
-                    if (market.TryLogin(username, password))
-                    {
-                        Console.WriteLine("Hello!");
-                        User user = market.GetUser(username);
-                        if (user is Customer)
-                        {
-                            
-                            foreach (var item in warehouse.GetProducts())
-                            {
-                                Console.WriteLine("Product:ID {0}, Name {1}, Amount {2}, Price {3}", item.id, item.name, item.amount, item.price);
-                            }
-
-                            bool checkP = true;
-                            while (checkP)
-                            {
-                                Console.WriteLine(
-                                    "Choose the action:\n 1) Add items to basket \n 2) Show the basket\n 3) Make payment\n 4) Show product list\n 5)Show transactions\n 6)Quit" );
-                                string n = Console.ReadLine();
-                                if (n == "1")
-                                {
-                                    bool entering = true;
-                                    while (entering)
-                                    {
-                                        Console.WriteLine("To quit enter the 'q' ");
-                                        Console.WriteLine("Please,enter the id of product");
-                                        var command = Console.ReadLine();
-                                        if (command == "q")
-                                        {
-                                            entering = false;
-                                            continue;
-                                        }
-
-                                        var productId = int.Parse(command);
-                                        Console.WriteLine("Please Enter the desired amount of product");
-                                        var productAmount = int.Parse(Console.ReadLine());
-                                        if (productAmount <= warehouse.GetProductById(productId).Amount)
-                                        {
-                                            var productIdAndAmount = new Tuple<int, int>(productId, productAmount);
-                                            user.Order.AddProduct(productIdAndAmount);
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine(
-                                                "We don't have such an amount of this product, Please enter less or equal to {0}",
-                                                warehouse.GetProductById(productId).Amount);
-                                            productAmount = int.Parse(Console.ReadLine());
-                                            var productIdAndAmount = new Tuple<int, int>(productId, productAmount);
-                                            user.Order.AddProduct(productIdAndAmount);
-
-                                        }
-                                    }
-
-
-                                }
-                                else if (n == "2")
-                                {
-                                    foreach (var item in user.Order.GetProducts())
-                                    {
-                                        Product current = warehouse.GetProductById(item.Item1);
-                                        Console.WriteLine(
-                                            "Product -> id: {0}, name: {1}, warehouse amount: {2}, user desired amount: {3}",
-                                            current.Id, current.Name, current.Amount, item.Item2);
-                                        
-                                    }
-                                }
-                                else if (n == "3")
-                                {
-                                    List<Product> sendList = new List<Product>();
-                                    foreach (var item in user.Order.GetProducts())
-                                    {
-                                        var val = warehouse.GetProductById(item.Item1);
-                                        sendList.Add(val);
-
-                                    }
-
-                                    var t = user.Order.PrepareTransaction(sendList);
-                                    Console.WriteLine("Transaction -> id:{0}, date: {1}, charge:{2}", t.Id,
-                                        t.TransactionDateTime, t.Charge);
-                                    SetTransactions(t.Id, t.Charge, t.TransactionDateTime);
-
-                                }
-                                else if (n == "4")
-                                {
-                                    foreach (var item in warehouse.GetProducts())
-                                    {
-                                        Console.WriteLine("Product:ID {0}, Name {1}, Amount {2}, Price {3}", item.Id, item.Name, item.Amount, item.Price);
-                                    }
-                                    
-                                }
-                                else if (n == "5")
-                                {
-                                    var result = GetTransactions();
-                                    foreach (var item in result)
-                                    {
-                                        Console.WriteLine("Transaction Id:{0}, Charge: {1}, TransactionDateTime: {2}", item.Id, item.Charge, item.TransactionDateTime);
-                                    }
-                                }
-                                else if (n == "6")
-                                {
-                                    checkP = false;
-                                }
-                            }
-                        }
-                    }
+                    Console.WriteLine(item.ProductId + " " + item.TotalPrice);
                 }
-                else if(option == "2")
+                Console.WriteLine(order.BuyerId);
+            }*/
+
+            Access();
+
+
+
+
+        }
+
+        public static void GetProductsFromFile()
+        {
+            var prosuctStore = new ProductStore(){Path  = productPath};
+            var productCollection = prosuctStore.GetCollection();
+            foreach (var item in productCollection)
+            {
+                system.AddProduct(item);
+            }
+
+        }
+
+        private static void Access()
+        {
+           Console.WriteLine("Choose the option:\n 1. Register \n 2. Login\n");
+           var option = int.Parse(Console.ReadLine());
+            if (option == 1)
+            {
+                Console.WriteLine("Please, enter the username");
+                string username = Console.ReadLine();
+                Console.WriteLine("Please, enter the password");
+                string password = Console.ReadLine();
+                Customer user = new Customer(username, password);
+                system.AddUser(user);
+                Access();
+            }
+            else
+            {
+                Console.WriteLine("Please, enter the username");
+                string username = Console.ReadLine();
+                Console.WriteLine("Please, enter the password");
+                string password = Console.ReadLine();
+              
+                if (system.AuthenticateUser(username, password))
                 {
-                    Console.WriteLine("Please, enter the username");
-                    string username = Console.ReadLine();
-                    Console.WriteLine("Enter the password");
-                    string password = Console.ReadLine();
-                    var user1 = new Customer(username, password);
-                    market.AddUser(user1);
-                    Console.WriteLine(market.GetUser(username).Username);
+                    loggedUser = system.GetUserByName(username);
+                    Console.WriteLine("Success");
+                    Menu();
                 }
                 else
                 {
-                    check = false;
+                    Console.WriteLine("Wrong username or password");
+                    Access();
                 }
+
+            }
+        }
+
+        private static void ShowProducts()
+        {
+            var productList = system.GetAllProducts();
+            foreach (var product in productList)
+            {
+                Console.WriteLine("Id: {0}, Name: {1}, Price: {2}, Amount: {3}, Origin: {4}",
+                    product.Id,
+                    product.Name,
+                    product.Price,
+                    product.Amount,
+                    product.Origin);
             }
         }
 
-        public static List<Transaction> GetTransactions()
+        private static void ShowBasket()
         {
-           
-            if (cachedCollection == null)
+            var basketCollection = loggedUser.Basket.GetBasketItems();
+            foreach (var item in basketCollection)
             {
-                var data = File.ReadAllLines(Path);
-                cachedCollection = data
-                    .Select(x => ConvertItem(x))
-                    .ToList();
-
+                Console.WriteLine("Id: {0}, Amount: {1}", item.GetId(), item.GetAmount());
             }
-
-            return cachedCollection;
         }
 
-        private static Transaction ConvertItem(string item)
+        private static void Menu()
         {
-            var itemList = item.Split(';');
-            return new Transaction()
+            Console.WriteLine("Choose the option: \n 1. Show list of products \n 2. Add product to basket \n 3. Remove product from basket \n 4. Show basket \n 5. Clear basket\n");
+            var option = int.Parse(Console.ReadLine());
+            switch (option)
             {
-                Id = Convert.ToInt32(itemList[0]),
-                Charge = Convert.ToSingle(itemList[1]),
-                TransactionDateTime = Convert.ToDateTime(itemList[2])
-            };
+                case 1:
+                    ShowProducts();
+                    Menu();
+                    break;
+                case 2:
+                    Console.WriteLine("Enter product Id");
+                    var IdAdd = int.Parse(Console.ReadLine());
+                    loggedUser.AddProductToBasket(IdAdd);
+                    Menu();
+                    break;
+                case 3:
+                    Console.WriteLine("Enter product Id");
+                    var IdRem = int.Parse(Console.ReadLine());
+                    loggedUser.Basket.RemoveProduct(IdRem);
+                    Menu();
+                    break;
+                case 4:
+                    ShowBasket();
+                    Menu();
+                    break;
+                case 5:
+                    loggedUser.DisposeBasket();
+                    Menu();
+                    break;
+            }
         }
-
-        public static void SetTransactions(int Id, float Charge, DateTime TransactionDateTime)
-        {
-            string val = Id.ToString() + ';' + Charge.ToString() + ';' + TransactionDateTime.ToString() + '\n';
-            File.AppendAllText(Path,val);
-        }
-
     }
 }
