@@ -37,6 +37,17 @@ namespace ShopConsole
 
         }
 
-      
+        public void WriteToFile(Product product)
+        {
+            string res = product.Id.ToString() + ";" + product.Name + ";" + product.Price.ToString() + ";" +
+                         product.Amount.ToString() + ";" + product.Origin;
+            
+            using (StreamWriter sw = File.AppendText(Path))
+            {
+                sw.WriteLine(res); 
+            }
+
+        }
+        
     }
 }

@@ -20,28 +20,49 @@ namespace ShopConsole
         private static  ShopSystem system = new ShopSystem();
         public static User loggedUser; 
         static readonly string productPath = "AppData/products.csv";
+        public static ProductStore productStore = new ProductStore(){Path  = productPath};
         
         static void Main(string[] args)
         {
 
             GetProductsFromFile();
+            //GetUsersFromFile();
+            //GerOrdersFromFile();
             Access();
         }
 
         public static void GetProductsFromFile()
         {
-            var prosuctStore = new ProductStore(){Path  = productPath};
-            var productCollection = prosuctStore.GetCollection();
+            var productCollection = productStore.GetCollection();
             foreach (var item in productCollection)
             {
                 system.AddProduct(item);
             }
+        }
 
+        private static void AddProduct()
+        {
+            Console.WriteLine("Enter the Id");
+            var id = int.Parse(Console.ReadLine());
+            Console.WriteLine("Enter the name");
+            var name = Console.ReadLine();
+            Console.WriteLine("Enter the price");
+            var price = int.Parse(Console.ReadLine());
+            Console.WriteLine("Enter the amount");
+            var amount = int.Parse(Console.ReadLine());
+            Console.WriteLine("Enter the origin");
+            var origin = Console.ReadLine();
+            Product product = new Product(){Id= id, Name = name, Price = price, Amount = amount,Origin = origin};
+            system.AddProduct(product);
+            productStore.WriteToFile(product);
         }
 
         private static void Access()
         {
-           Console.WriteLine("Choose the option:\n 1. Register \n 2. Login\n");
+           Console.WriteLine("Choose the option:\n " +
+                             "1. Register \n " +
+                             "2. Login\n " +
+                             "3. System methods \n ");
            var option = int.Parse(Console.ReadLine());
             if (option == 1)
             {
@@ -49,11 +70,13 @@ namespace ShopConsole
                 string username = Console.ReadLine();
                 Console.WriteLine("Please, enter the password");
                 string password = Console.ReadLine();
+                
                 Customer user = new Customer(username, password);
+                
                 system.AddUser(user);
                 Access();
             }
-            else
+            else if (option == 2)
             {
                 Console.WriteLine("Please, enter the username");
                 string username = Console.ReadLine();
@@ -73,8 +96,41 @@ namespace ShopConsole
                 }
 
             }
+            else
+            {
+                SystemMenu();
+                Access();
+            }
         }
 
+        private static void SystemMenu()
+        {
+            Console.WriteLine("Choose the option: \n " +
+                              "1. Get all products\n " +
+                              "2. Get all users \n " +
+                              "3. Get all orders \n " +
+                              "4. Add product \n ");
+            var option = int.Parse(Console.ReadLine());
+            switch (option)
+            {
+                    case 1:
+                        ShowProducts();
+                        SystemMenu();
+                        break;
+                    case 2:
+                        ShowUsers();
+                        SystemMenu();
+                        break;
+                    case 3:
+                        ShowOrders();
+                        SystemMenu();
+                        break;
+                    case 4:
+                        AddProduct();
+                        break;
+            }
+
+        }
         private static void ShowProducts()
         {
             var productList = system.GetAllProducts();
@@ -89,6 +145,14 @@ namespace ShopConsole
             }
         }
 
+        private static void ShowUsers()
+        {
+            var userList = system.GetAllUsers();
+            foreach (var item in userList)
+            {
+                Console.WriteLine("Id: {0}, username: {1}", item.id, item.Username);
+            }
+        }
         private static void ShowBasket()
         {
             var basketCollection = loggedUser.Basket.GetBasketItems();
