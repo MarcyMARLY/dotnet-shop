@@ -19,6 +19,11 @@ namespace ShopLibrary.Models.User
             Basket = new Basket();
         }
 
+        public User()
+        {
+            
+        }
+        
         public void DisposeBasket()
         {
             Basket.CleanBasket();

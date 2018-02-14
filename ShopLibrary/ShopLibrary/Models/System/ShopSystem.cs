@@ -29,6 +29,11 @@ namespace ShopLibrary.Models.System
             return store.GetAllUsers().Find(x => x.Username == username);
         }
 
+        public List<User.User> GetAllUsers()
+        {
+            return store.GetAllUsers();
+        }
+
         public List<Product.Product> GetAllProducts()
         {
             return store.GetAllProducts();

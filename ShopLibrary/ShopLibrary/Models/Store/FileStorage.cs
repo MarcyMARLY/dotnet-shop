@@ -4,64 +4,68 @@ namespace ShopLibrary.Models.Store
 {
     public class FileStorage : IStore
     {
-        private IChangeable userStorage;
-        private IChangeable orderStorage;
-        private IChangeable productStorage;
+//        private IChangeable userStorage;
+//        private IChangeable orderStorage;
+//        private IChangeable productStorage;
+        List<User.User> users = new List<User.User>();
+        List<Product.Product> products = new List<Product.Product>();
+        List<Order.Order> orders = new List<Order.Order>();
         
         public FileStorage()
         {
-            userStorage = new UserFileStorage();
-            orderStorage = new OrderFileStorage();
-            productStorage = new ProductFileStorage();
+//            userStorage = new UserFileStorage();
+//            orderStorage = new OrderFileStorage();
+//            productStorage = new ProductFileStorage();
+//            
+//            userStorage.ReadFromFile();
+//            orderStorage.ReadFromFile();
+//            productStorage.ReadFromFile();
             
-            userStorage.ReadFromFile();
-            orderStorage.ReadFromFile();
-            productStorage.ReadFromFile();
         }
         
         public List<User.User> GetAllUsers()
         {
-            throw new global::System.NotImplementedException();
+            return users;
         }
 
         public User.User GetUserById(int id)
         {
-            throw new global::System.NotImplementedException();
+            return users.Find(x => x.GetUserId() == id);
         }
 
         public void AddUser(User.User user)
         {
-            throw new global::System.NotImplementedException();
+            this.users.Add(user);
         }
 
         public List<Product.Product> GetAllProducts()
         {
-            throw new global::System.NotImplementedException();
+            return products;
         }
 
         public Product.Product GetProductById(int id)
         {
-            throw new global::System.NotImplementedException();
+            return products.Find(x => x.Id == id);
         }
 
         public void AddProduct(Product.Product product)
         {
-            throw new global::System.NotImplementedException();
+            products.Add(product);
         }
 
         public List<Order.Order> GetAllOrders()
         {
-            throw new global::System.NotImplementedException();
+            return orders;
         }
 
         public Order.Order GetOrderById(int id)
         {
-            throw new global::System.NotImplementedException();
+            return orders.Find(x => x.OrderId == id);
         }
 
         public void AddOrder(Order.Order order)
         {
-            throw new global::System.NotImplementedException();
+            orders.Add(order);            
         }
     }
 }
