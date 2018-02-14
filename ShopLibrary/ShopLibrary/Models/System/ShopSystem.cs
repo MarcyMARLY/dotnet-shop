@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using ShopLibrary.Models.Product;
 using ShopLibrary.Models.Store;
+using ShopLibrary.Models.Order;
 
 namespace ShopLibrary.Models.System
 {
     public class ShopSystem
     {
         private IStore store;
-        private List<User.User> users;
         
         public ShopSystem()
         {
@@ -16,17 +16,47 @@ namespace ShopLibrary.Models.System
 
         public void AddUser(User.User newUser)
         {
-            users.Add(newUser);
+            store.AddUser(newUser);
         }
 
-        public bool TryLogin(string username, string password)
+        public bool AuthenticateUser(string username, string password)
         {
-            return users.Find(x => x.Authenticate(username, password)) != null;
+            return store.GetAllUsers().Find(x => x.Authenticate(username, password)) != null;
         }
 
-        public User.User GetUser(string username)
+        public User.User GetUserByName(string username)
         {
-            return users.Find(x => x.Username == username);
+            return store.GetAllUsers().Find(x => x.Username == username);
+        }
+
+        public List<Product.Product> GetAllProducts()
+        {
+            return store.GetAllProducts();
+        }
+
+        public Product.Product GetProductById(int id)
+        {
+            return store.GetProductById(id);
+        }
+
+        public void AddProduct(Product.Product product)
+        {
+            store.AddProduct(product);    
+        }
+        
+        public Order.Order GetOrderById(int id)
+        {
+            return store.GetOrderById(id);
+        }
+
+        public List<Order.Order> GetAllOrders()
+        {
+            return store.GetAllOrders();
+        }
+
+        public void AddOrder(Order.Order order)
+        {
+            store.AddOrder(order);
         }
     }
 }
