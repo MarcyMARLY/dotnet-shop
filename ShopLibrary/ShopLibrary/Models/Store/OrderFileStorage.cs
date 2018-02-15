@@ -2,19 +2,20 @@
 
 namespace ShopLibrary.Models.Store
 {
-    public class OrderFileStorage : IChangeable
+    public class OrderFileStorage : IChangeable<Order.Order>
     {
-        public string GetPathToFile()
+        public string Path { get; set; }
+        public List<Order.Order> GetCollection()
         {
             throw new global::System.NotImplementedException();
         }
 
-        public void ReadFromFile()
+        public Order.Order ConvertItem(string item)
         {
             throw new global::System.NotImplementedException();
         }
 
-        public void SaveToFile()
+        public void WriteToFile(Order.Order t)
         {
             throw new global::System.NotImplementedException();
         }

@@ -49,6 +49,14 @@ namespace ShopLibrary.Models.System
         {
             return store.GetAllProducts();
         }
+        public List<Product.Product> GetAllProductsOrderesByPrice()
+        {
+            return store.GetAllProductsOrderedByPrice();
+        }
+        public List<Product.Product> GetAllProductsOrderesByAmount()
+        {
+            return store.GetAllProductsOrderedByAmount();
+        }
 
         public Product.Product GetProductById(int id)
         {
@@ -68,6 +76,10 @@ namespace ShopLibrary.Models.System
         public List<Order.Order> GetAllOrders()
         {
             return store.GetAllOrders();
+        }
+        public List<Order.Order> GetAllOrdersByUser(int userId)
+        {
+            return store.GetAllOrdersByUser(userId);
         }
 
         public void AddOrder(Order.Order order)

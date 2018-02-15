@@ -1,20 +1,44 @@
-﻿namespace ShopLibrary.Models.Store
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using ShopLibrary.Models.User;
+
+namespace ShopLibrary.Models.Store
 {
-    public class UserFileStorage: IChangeable
+    public class UserFileStorage: IChangeable<Customer>
     {
-        public string GetPathToFile()
+        private List<Customer> storeCollection;
+        public string Path { get; set; }
+        public List<Customer> GetCollection()
         {
-            throw new global::System.NotImplementedException();
+            if (storeCollection == null)
+            {
+                var data = File.ReadAllLines(Path);
+                storeCollection = data
+                    .Skip(1)
+                    .Select(x => ConvertItem(x))
+                    .ToList();
+            }
+
+            return storeCollection;
         }
 
-        public void ReadFromFile()
+        public Customer ConvertItem(string item)
         {
-            throw new global::System.NotImplementedException();
+            var itemList = item.Split(';');
+            return new Customer(itemList[0],itemList[1]){
+                Username = itemList[0],
+                password = itemList[1]
+            };
         }
 
-        public void SaveToFile()
+        public void WriteToFile(Customer t)
         {
-            throw new global::System.NotImplementedException();
+            string res = t.Username + ";" + t.password;
+            using (StreamWriter sw = File.AppendText(Path))
+            {
+                sw.WriteLine(res); 
+            }
         }
     }
 }

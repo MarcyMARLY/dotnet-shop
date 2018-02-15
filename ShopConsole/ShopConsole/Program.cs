@@ -9,6 +9,7 @@ using System.Security.Cryptography.X509Certificates;
 using ShopLibrary.Models;
 using ShopLibrary.Models.Order;
 using ShopLibrary.Models.Product;
+using ShopLibrary.Models.Store;
 using ShopLibrary.Models.System;
 using ShopLibrary.Models.User;
 
@@ -19,18 +20,19 @@ namespace ShopConsole
 
         private static  ShopSystem system = new ShopSystem();
         public static User loggedUser; 
+        
         static readonly string productPath = "AppData/products.csv";
         static readonly string usersPath = "AppData/users.csv";
-        static readonly string ordersPath = "AppData/orders.csv";
-        public static ProductStore productStore = new ProductStore(){Path  = productPath};
-        public static CustomerStore customerStore = new CustomerStore(){Path  = usersPath};
+        
+        public static ProductFileStorage productStore = new ProductFileStorage{Path = productPath};
+        
+        public static UserFileStorage customerStore = new UserFileStorage(){Path  = usersPath};
         
         static void Main(string[] args)
         {
 
             GetProductsFromFile();
             GetUsersFromFile();
-            //GerOrdersFromFile();
             Access();
         }
 
@@ -75,46 +77,66 @@ namespace ShopConsole
            Console.WriteLine("Choose the option:\n " +
                              "1. Register \n " +
                              "2. Login\n " +
-                             "3. System methods \n ");
-           var option = int.Parse(Console.ReadLine());
-            if (option == 1)
+                             "3. System methods \n " +
+                             "4. Quit \n ");
+            var par = Console.ReadLine();
+            int option = 0;
+            try
             {
-                Console.WriteLine("Please, enter the username");
-                string username = Console.ReadLine();
-                Console.WriteLine("Please, enter the password");
-                string password = Console.ReadLine();
-                
-                Customer user = new Customer(username, password);
-                
-                system.AddUser(user);
-                customerStore.WriteToFile(user);
+                option = int.Parse(par);
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("{0} is not an integer", par);
                 Access();
             }
-            else if (option == 2)
-            {
-                Console.WriteLine("Please, enter the username");
-                string username = Console.ReadLine();
-                Console.WriteLine("Please, enter the password");
-                string password = Console.ReadLine();
-              
-                if (system.AuthenticateUser(username, password))
-                {
-                    loggedUser = system.GetUserByName(username);
-                    Console.WriteLine("Success");
-                    Menu();
-                }
-                else
-                {
-                    Console.WriteLine("Wrong username or password");
-                    Access();
-                }
 
-            }
-            else
+            switch (option)
             {
-                SystemMenu();
-                Access();
+                    case 1:
+                        Console.WriteLine("Please, enter the username");
+                        string usernameR = Console.ReadLine();
+                        Console.WriteLine("Please, enter the password");
+                        string passwordR = Console.ReadLine();
+                
+                        Customer user = new Customer(usernameR, passwordR);
+                
+                        system.AddUser(user);
+                        customerStore.WriteToFile(user);
+                        Access();
+                        break;
+                    case 2:
+                        Console.WriteLine("Please, enter the username");
+                        string username = Console.ReadLine();
+                        Console.WriteLine("Please, enter the password");
+                        string password = Console.ReadLine();
+              
+                        if (system.AuthenticateUser(username, password))
+                        {
+                            loggedUser = system.GetUserByName(username);
+                            Console.WriteLine("Success");
+                            Menu();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Wrong username or password");
+                            Access();
+                        }
+                        break;
+                    case 3:
+                        SystemMenu();
+                        Access();
+                        break;
+                    case 4:
+                        break;
+                    default:
+                        Access();
+                        break;
+                       
+                        
+                        
             }
+           
         }
 
         private static void SystemMenu()
@@ -123,8 +145,19 @@ namespace ShopConsole
                               "1. Get all products\n " +
                               "2. Get all users \n " +
                               "3. Get all orders \n " +
-                              "4. Add product \n ");
-            var option = int.Parse(Console.ReadLine());
+                              "4. Add product \n " +
+                              "5. Quit \n ");
+            var par = Console.ReadLine();
+                        int option = 0;
+                        try
+                        {
+                            option = int.Parse(par);
+                        }
+                        catch (FormatException)
+                        {
+                            Console.WriteLine("{0} is not an integer", par);
+                            SystemMenu();
+                        }
             switch (option)
             {
                     case 1:
@@ -141,6 +174,13 @@ namespace ShopConsole
                         break;
                     case 4:
                         AddProduct();
+                        SystemMenu();
+                        break;
+                    case 5:
+                        Access();
+                        break;
+                    default:
+                        SystemMenu();
                         break;
             }
 
@@ -148,6 +188,32 @@ namespace ShopConsole
         private static void ShowProducts()
         {
             var productList = system.GetAllProducts();
+            foreach (var product in productList)
+            {
+                Console.WriteLine("Id: {0}, Name: {1}, Price: {2}, Amount: {3}, Origin: {4}",
+                    product.Id,
+                    product.Name,
+                    product.Price,
+                    product.Amount,
+                    product.Origin);
+            }
+        }
+        private static void ShowProductsOrderedByPrice()
+        {
+            var productList = system.GetAllProductsOrderesByPrice();
+            foreach (var product in productList)
+            {
+                Console.WriteLine("Id: {0}, Name: {1}, Price: {2}, Amount: {3}, Origin: {4}",
+                    product.Id,
+                    product.Name,
+                    product.Price,
+                    product.Amount,
+                    product.Origin);
+            }
+        }
+        private static void ShowProductsOrderedByAmount()
+        {
+            var productList = system.GetAllProductsOrderesByAmount();
             foreach (var product in productList)
             {
                 Console.WriteLine("Id: {0}, Name: {1}, Price: {2}, Amount: {3}, Origin: {4}",
@@ -184,6 +250,14 @@ namespace ShopConsole
                Console.WriteLine("Status: {0}, Id: {1}, Buyer Id: {2}", item.Status, item.OrderId, item.BuyerId); 
             }
         }
+        private static void ShowOrdersByUser(int userId)
+        {
+            var orderCollection = system.GetAllOrdersByUser(userId);
+            foreach (var item in orderCollection)
+            {
+                Console.WriteLine("Status: {0}, Id: {1}, Buyer Id: {2}", item.Status, item.OrderId, item.BuyerId); 
+            }
+        }
 
         private static void Menu()
         {
@@ -194,11 +268,23 @@ namespace ShopConsole
                               " 4. Remove whole product \n" +
                               " 5. Show basket \n" +
                               " 6. Clear basket \n" +
-                              " 7.Create Order \n" +
-                              " 8.Show orders \n" +
+                              " 7. Create Order \n" +
+                              " 8. Show orders \n" +
                               " 9. Pay Order \n" +
-                              " 10. Quit \n");
-            var option = int.Parse(Console.ReadLine());
+                              " 10. Show products ordered by price \n" +
+                              " 11. Show products ordered by amount \n" +
+                              " 12. Quit \n");
+            var par = Console.ReadLine();
+            int option = 0;
+            try
+            {
+                option = int.Parse(par);
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("{0} is not an integer", par);
+                Menu();
+            }
             switch (option)
             {
                 case 1:
@@ -236,7 +322,7 @@ namespace ShopConsole
                     Menu();
                     break;
                 case 8:
-                    ShowOrders();
+                    ShowOrdersByUser(loggedUser.id);
                     Menu();
                     break;
                 case 9:
@@ -246,6 +332,18 @@ namespace ShopConsole
                     Menu();
                     break;
                 case 10:
+                    ShowProductsOrderedByPrice();
+                    Menu();
+                    break;
+                case 11:
+                    ShowProductsOrderedByAmount();
+                    Menu();
+                    break;
+                case 12:
+                    Access();
+                    break;
+                default:
+                    Menu();
                     break;
             }
         }

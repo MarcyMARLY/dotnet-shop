@@ -1,9 +1,12 @@
-﻿namespace ShopLibrary.Models.Store
+﻿using System.Collections.Generic;
+
+namespace ShopLibrary.Models.Store
 {
-    public interface IChangeable
+    public interface IChangeable<T>
     {
-        string GetPathToFile();
-        void ReadFromFile();
-        void SaveToFile();
+        string Path { get; set; }
+        List<T> GetCollection();
+        T ConvertItem(string item);
+        void WriteToFile(T t);
     }
 }

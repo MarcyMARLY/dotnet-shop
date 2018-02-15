@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ShopLibrary.Models.Store
 {
@@ -43,6 +44,15 @@ namespace ShopLibrary.Models.Store
             return products;
         }
 
+        public List<Product.Product> GetAllProductsOrderedByPrice()
+        {
+            return products.OrderBy(x => x.Price).ToList();
+        }
+        public List<Product.Product> GetAllProductsOrderedByAmount()
+        {
+            return products.OrderBy(x => x.Amount).ToList();
+        }
+
         public Product.Product GetProductById(int id)
         {
             return products.Find(x => x.Id == id);
@@ -56,6 +66,10 @@ namespace ShopLibrary.Models.Store
         public List<Order.Order> GetAllOrders()
         {
             return orders;
+        }
+        public List<Order.Order> GetAllOrdersByUser(int userId)
+        {
+            return orders.FindAll(x => x.BuyerId == userId);
         }
 
         public Order.Order GetOrderById(int id)
