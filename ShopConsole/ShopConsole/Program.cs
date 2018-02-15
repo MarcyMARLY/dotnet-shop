@@ -20,13 +20,16 @@ namespace ShopConsole
         private static  ShopSystem system = new ShopSystem();
         public static User loggedUser; 
         static readonly string productPath = "AppData/products.csv";
+        static readonly string usersPath = "AppData/users.csv";
+        static readonly string ordersPath = "AppData/orders.csv";
         public static ProductStore productStore = new ProductStore(){Path  = productPath};
+        public static CustomerStore customerStore = new CustomerStore(){Path  = usersPath};
         
         static void Main(string[] args)
         {
 
             GetProductsFromFile();
-            //GetUsersFromFile();
+            GetUsersFromFile();
             //GerOrdersFromFile();
             Access();
         }
@@ -37,6 +40,16 @@ namespace ShopConsole
             foreach (var item in productCollection)
             {
                 system.AddProduct(item);
+            }
+        }
+
+        public static void GetUsersFromFile()
+        {
+            var userCollection = customerStore.GetCollection();
+            foreach (var item in userCollection)
+            {
+                Customer customer = new Customer(item.Username,item.password);
+                system.AddUser(customer);
             }
         }
 
@@ -74,6 +87,7 @@ namespace ShopConsole
                 Customer user = new Customer(username, password);
                 
                 system.AddUser(user);
+                customerStore.WriteToFile(user);
                 Access();
             }
             else if (option == 2)

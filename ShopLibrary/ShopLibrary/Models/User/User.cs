@@ -8,7 +8,7 @@ namespace ShopLibrary.Models.User
     public abstract class User
     {
         public int id;
-        protected string password;
+        public string password;
         
         public string Username { get; set; }
         public Basket Basket { get; set; }

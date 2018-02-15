@@ -6,7 +6,7 @@ using ShopLibrary.Models.Product;
 
 namespace ShopConsole
 {
-    public class ProductStore
+    public class ProductStore:IStore<Product>
     {
         private List<Product> storeCollection;
         public string Path { get; set; }
