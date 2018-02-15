@@ -25,7 +25,6 @@ namespace ShopConsole
         static readonly string usersPath = "AppData/users.csv";
         
         public static ProductFileStorage productStore = new ProductFileStorage{Path = productPath};
-        
         public static UserFileStorage customerStore = new UserFileStorage(){Path  = usersPath};
         
         static void Main(string[] args)
@@ -52,6 +51,7 @@ namespace ShopConsole
             {
                 Customer customer = new Customer(item.Username,item.password);
                 system.AddUser(customer);
+                //Console.WriteLine("Customer id {0}", customer.id);
             }
         }
 

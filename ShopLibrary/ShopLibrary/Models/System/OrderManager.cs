@@ -9,7 +9,8 @@ namespace ShopLibrary.Models.System
     public class OrderManager
     {
         private IStore _storage;
-        public static OrderManager manager; 
+        public static OrderManager manager;
+        public Random rnd = new Random();
 
         public OrderManager(IStore storage)
         {
@@ -31,7 +32,7 @@ namespace ShopLibrary.Models.System
                 var order = new Order.Order
                 {
                     BuyerId = userId,
-                    OrderId = 1,
+                    OrderId = rnd.Next(100,1000) % 100,
                     Status = OrderStatus.CREATED
                 };
                 user.Basket.GetBasketItems().ForEach(x => order.OrderItems.Add(new OrderItem()
