@@ -28,7 +28,7 @@
 
         public void RemoveItem()
         {
-            this.amount--;
+            if (this.amount >= 1) this.amount--;
         }
     }
 }
