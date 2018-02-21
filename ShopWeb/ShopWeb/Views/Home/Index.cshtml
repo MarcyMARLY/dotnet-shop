@@ -1,0 +1,47 @@
+﻿<h2>Shop system</h2>
+@model IEnumerable<ShopLibrary.Models.Product.Product>
+<h2>Products</h2>
+<div >
+    <table class="table">
+        <thead>
+        <tr>
+
+            <th scope="row">ProductId</th>
+            <th scope="row">ProductName</th>
+            <th scope="row">ProductPrice</th>
+            <th scope="row">ProductAmount</th>
+            <th scope="row">ProductOrigin</th>
+           
+
+
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr>
+
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Price
+                </td>
+                <td>
+                    @item.Amount
+                </td>
+                <td>
+                    @item.Origin
+                </td>
+               
+            
+            </tr>
+        }
+        </tbody>
+    </table> 
+   
+</div>

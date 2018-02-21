@@ -1,0 +1,46 @@
+@model IEnumerable<ShopLibrary.Models.Order.BasketItem>
+
+@{
+    Layout = "MasterMEnu";
+}
+
+<h2>Basket</h2>
+<table class="table">
+    <thead>
+    <tr>
+
+        <th scope="row">ProductId</th>
+        <th scope="row">ProductAmount</th>
+        <th scope="row">Decrease number</th>
+        <th scope="row">Remove</th>
+        
+
+
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+
+        <tr>
+
+            <td>
+                @item.GetId()
+            </td>
+            <td>
+                @item.GetAmount()
+            </td>
+            <td>
+                <input type="button" value="Decrease" onclick="location.href='@Url.Action("DecreaseAmount", "Menu",new {Id = @item.GetId()})'" />
+            </td>
+            <td>
+                <input type="button" value="Remove" onclick="location.href='@Url.Action("Remove", "Menu",new {Id = @item.GetId()})'" />
+            </td>
+            
+        </tr>
+    }
+    </tbody>
+    
+</table>
+<input type="button" value="Clear basket" onclick="location.href='@Url.Action("ClearBasket", "Menu",new {})'" /> 
+<input type="button" value="Create order" onclick="location.href='@Url.Action("CreateOrder", "Menu",new {})'" />

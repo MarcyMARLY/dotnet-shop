@@ -1,0 +1,45 @@
+@model IEnumerable<ShopLibrary.Models.Order.Order>
+
+@{
+    Layout = "MasterMEnu";
+}
+
+<h2>Orders</h2>
+<table class="table">
+    <thead>
+    <tr>
+
+        <th scope="row">Status</th>
+        <th scope="row">OrderID</th>
+        <th scope="row">Buyer Id</th>
+        <th scope="row">Pay</th>
+        
+
+
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+
+        <tr>
+
+            <td>
+                @item.Status
+            </td>
+            <td>
+                @item.OrderId
+            </td>
+            <td>
+                @item.BuyerId
+            </td>
+            <td>
+                <input type="button" value="Pay" onclick="location.href='@Url.Action("Pay", "Menu",new {Id = @item.OrderId})'" />
+            </td>
+           
+            
+        </tr>
+    }
+    </tbody>
+    
+</table>

@@ -1,0 +1,51 @@
+@model IEnumerable<ShopLibrary.Models.Product.Product>
+@{
+    Layout = "MasterMEnu";
+}
+<div >
+    <table class="table">
+        <thead>
+        <tr>
+
+            <th scope="row">ProductId</th>
+            <th scope="row">ProductName</th>
+            <th scope="row">ProductPrice</th>
+            <th scope="row">ProductAmount</th>
+            <th scope="row">ProductOrigin</th>
+            <th scope="row">Add to basket</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr>
+
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Price
+                </td>
+                <td>
+                    @item.Amount
+                </td>
+                <td>
+                    @item.Origin
+                </td>
+                <td>
+                    <input type="button" value="Add" onclick="location.href='@Url.Action("AddToBasket", "Menu",new {Id = @item.Id,source = 1})'" />
+                </td>
+            
+            </tr>
+        }
+        </tbody>
+    </table> 
+    <input type="button" value="Order by price" onclick="location.href='@Url.Action("OrderByPrice", "Menu")'" />
+    <input type="button" value="Order by amount" onclick="location.href='@Url.Action("OrderByAmount", "Menu")'" />
+</div>

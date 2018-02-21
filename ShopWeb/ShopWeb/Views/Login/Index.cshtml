@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+<h2>@ViewData["message"]</h2>
+@using (Html.BeginForm("Index", "Login",  FormMethod.Post))
+{
+    @Html.TextBox("Username");
+    @Html.TextBox("Password");
+    <input type="submit" value="OK">
+}

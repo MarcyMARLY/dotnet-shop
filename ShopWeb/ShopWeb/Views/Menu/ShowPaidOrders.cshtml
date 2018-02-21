@@ -1,0 +1,43 @@
+@model IEnumerable<ShopLibrary.Models.Order.Order>
+
+@{
+    Layout = "MasterMEnu";
+}
+
+<h2>Orders</h2>
+<table class="table">
+    <thead>
+    <tr>
+
+        <th scope="row">Status</th>
+        <th scope="row">OrderID</th>
+        <th scope="row">Buyer Id</th>
+        
+        
+
+
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+
+        <tr>
+
+            <td>
+                @item.Status
+            </td>
+            <td>
+                @item.OrderId
+            </td>
+            <td>
+                @item.BuyerId
+            </td>
+            
+           
+            
+        </tr>
+    }
+    </tbody>
+    
+</table>
