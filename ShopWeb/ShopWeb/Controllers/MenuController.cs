@@ -14,6 +14,24 @@ namespace ShopWeb.Controllers
         {
             return View(Containet.NewShopSystem.GetAllProducts());
         }
+        public IActionResult IndexA(int parameter)
+        {
+            switch (parameter)
+            {
+                    case 1:
+                        return View(Containet.NewShopSystem.GetAllProducts().OrderBy(x => x.Id));
+                    case 2:
+                        return View(Containet.NewShopSystem.GetAllProducts().OrderBy(x => x.Name));
+                    case 3:
+                        return View(Containet.NewShopSystem.GetAllProducts().OrderBy(x => x.Price));
+                    case 4:
+                        return View(Containet.NewShopSystem.GetAllProducts().OrderBy(x => x.Amount));
+                    case 5:
+                        return View(Containet.NewShopSystem.GetAllProducts().OrderBy(x => x.Origin));
+                    
+            }
+            return View(Containet.NewShopSystem.GetAllProducts());
+        }
 
         public IActionResult AddToBasket(int Id, int source)
         {
