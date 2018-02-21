@@ -28,7 +28,7 @@ namespace ShopWeb.Controllers
             Containet.NewShopSystem.AddUser(customer);
             Containet.customerStore.WriteToFile(customer);
             
-            return View();
+            return RedirectToAction("Index","Login");
         }
 
     }

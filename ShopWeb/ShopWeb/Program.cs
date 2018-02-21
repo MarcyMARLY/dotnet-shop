@@ -20,6 +20,7 @@ namespace ShopWeb
         {
             Containet.GetProductsFromFile();
             Containet.GetUsersFromFile();
+            Containet.GetOrdersFromFile();
             
             BuildWebHost(args).Run();
         }

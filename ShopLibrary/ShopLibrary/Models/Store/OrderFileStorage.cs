@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ShopLibrary.Models.Order;
@@ -27,6 +28,7 @@ namespace ShopLibrary.Models.Store
 
         public Order.Order ConvertItem(string item)
         {
+            Console.WriteLine(item);
             var itemList = item.Split(';');
             var buyerId = int.Parse(itemList[0]);
             var orderId = int.Parse(itemList[1]);

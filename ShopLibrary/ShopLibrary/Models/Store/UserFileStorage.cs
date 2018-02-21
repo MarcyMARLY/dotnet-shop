@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
+using System.Xml.Schema;
 using ShopLibrary.Models.User;
 
 namespace ShopLibrary.Models.Store
@@ -26,15 +28,17 @@ namespace ShopLibrary.Models.Store
         public Customer ConvertItem(string item)
         {
             var itemList = item.Split(';');
-            return new Customer(itemList[0],itemList[1]){
+            var cu =  new Customer(itemList[0],itemList[1]){
                 Username = itemList[0],
                 password = itemList[1]
             };
+            cu.id = int.Parse(itemList[2]);
+            return cu;
         }
 
         public void WriteToFile(Customer t)
         {
-            string res = t.Username + ";" + t.password;
+            string res = t.Username + ";" + t.password+";"+t.id;
             using (StreamWriter sw = File.AppendText(Path))
             {
                 sw.WriteLine(res); 

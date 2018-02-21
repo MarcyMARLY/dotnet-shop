@@ -65,24 +65,32 @@ namespace ShopWeb.Controllers
         public IActionResult ShowOrders()
         {
             
-            return View(Containet.NewShopSystem.GetAllOrdersByUser(Containet.loggedUser.id).Where(x=>x.Status==OrderStatus.CREATED));
+            return View(Containet.NewShopSystem
+                .GetAllOrdersByUser(Containet.loggedUser.id)
+                .Where(x => x.Status == OrderStatus.CREATED));
         }
         public IActionResult ShowPaidOrders()
         {
             
-            return View(Containet.NewShopSystem.GetAllOrdersByUser(Containet.loggedUser.id).Where(x=>x.Status==OrderStatus.PAID));
+            return View(Containet.NewShopSystem
+                .GetAllOrdersByUser(Containet.loggedUser.id)
+                .Where(x => x.Status == OrderStatus.PAID));
         }
 
         public IActionResult CreateOrder()
         {
             Containet.NewShopSystem.CreateOrderForUser(Containet.loggedUser.id);
-            Console.WriteLine(Containet.loggedUser.id);
+            
+            //Console.WriteLine(Containet.loggedUser.id);
             return RedirectToAction("ShowOrders", "Menu");
         }
 
         public IActionResult Pay(int Id)
         {
+            
             Containet.NewShopSystem.PayOrder(Containet.loggedUser.id,Id);
+            var test = Containet.NewShopSystem.GetAllOrdersByUser(Containet.loggedUser.id).Last();
+            Containet.orderStore.WriteToFile(test);
             return RedirectToAction("ShowPaidOrders", "Menu");
         }
 
