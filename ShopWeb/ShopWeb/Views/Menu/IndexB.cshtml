@@ -47,5 +47,11 @@
         }
         </tbody>
     </table> 
+    <h3>Enter the number between 1 and 61</h3>
+    @using (Html.BeginForm("IndexB", "Menu",  FormMethod.Post))
+    {
+        @Html.TextBox("page");
+        <input type="submit" value="OK">
+    }
   
 </div>

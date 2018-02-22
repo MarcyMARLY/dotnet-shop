@@ -47,6 +47,11 @@
     }
     </tbody>
 </table> 
-    <input type="button" value="Order by price" onclick="location.href='@Url.Action("OrderByPrice", "Menu")'" />
-    <input type="button" value="Order by amount" onclick="location.href='@Url.Action("OrderByAmount", "Menu")'" />
+    <h3>Enter the number between 1 and 61</h3>
+    @using (Html.BeginForm("IndexB", "Menu",  FormMethod.Post))
+    {
+        @Html.TextBox("page");
+        <input type="submit" value="OK">
+    }
+
 </div>

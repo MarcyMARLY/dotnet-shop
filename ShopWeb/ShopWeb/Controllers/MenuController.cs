@@ -12,7 +12,20 @@ namespace ShopWeb.Controllers
         // GET
         public IActionResult Index()
         {
-            return View(Containet.NewShopSystem.GetAllProducts());
+            
+            return View(Containet.NewShopSystem.GetAllProducts().Take(10));
+        }
+        
+        [HttpPost]
+        public IActionResult IndexB()
+        {
+            var page = int.Parse(Request.Form["page"].ToString());
+            if (page != 0)
+            {
+                return View(Containet.NewShopSystem.GetAllProducts().Skip(10*(page-1)).Take(10)); 
+            }
+            
+            return View(Containet.NewShopSystem.GetAllProducts().Take(10));
         }
         public IActionResult IndexA(int parameter)
         {
